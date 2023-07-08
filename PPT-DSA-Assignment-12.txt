@@ -1,0 +1,671 @@
+1)
+package lecture12.LinkedList;
+
+/*
+
+Given a singly linked list, delete middle of the linked list. For example, if given linked list is 1->2->3->4->5 then linked list should be modified to 1->2->4->5.If there are even nodes, then there would be two middle nodes, we need to delete the second middle element. For example, if given linked list is 1->2->3->4->5->6 then it should be modified to 1->2->3->5->6.If the input linked list is NULL or has 1 node, then it should return NULL
+
+Input:
+LinkedList: 1->2->3->4->5
+Output:1 2 4 5
+
+*/
+
+class ListNode {
+    int val;
+    ListNode next;
+    
+    public ListNode(int val) {
+        this.val = val;
+    }
+}
+
+public class Question01 {
+
+	
+
+	
+	    public static ListNode deleteMiddleNode(ListNode head) {
+	        if (head == null || head.next == null) {
+	            return null;
+	        }
+	        
+	        ListNode slowPtr = head;
+	        ListNode fastPtr = head;
+	        ListNode prevPtr = null;
+	        
+	        while (fastPtr != null && fastPtr.next != null) {
+	            fastPtr = fastPtr.next.next;
+	            prevPtr = slowPtr;
+	            slowPtr = slowPtr.next;
+	        }
+	        
+	        prevPtr.next = slowPtr.next;
+	        slowPtr.next = null;
+	        
+	        return head;
+	    }
+	    
+	    public static void printLinkedList(ListNode head) {
+	        ListNode curr = head;
+	        while (curr != null) {
+	            System.out.print(curr.val + " ");
+	            curr = curr.next;
+	        }
+	        System.out.println();
+	    }
+	    
+	    public static void main(String[] args) {
+	        ListNode head = new ListNode(1);
+	        head.next = new ListNode(2);
+	        head.next.next = new ListNode(3);
+	        head.next.next.next = new ListNode(4);
+	        head.next.next.next.next = new ListNode(5);
+	        
+	        System.out.println("Original linked list:");
+	        printLinkedList(head);
+	        
+	        head = deleteMiddleNode(head);
+	        
+	        System.out.println("Modified linked list:");
+	        printLinkedList(head);
+	    }
+	}
+
+2)
+package lecture12.LinkedList;
+
+/*
+Given a linked list of N nodes. The task is to check if the linked list has a loop. Linked list can contain self loop.
+Input:
+N = 3
+value[] = {1,3,4}
+x(position at which tail is connected) = 2
+Output:True
+Explanation:In above test case N = 3.
+The linked list with nodes N = 3 is
+given. Then value of x=2 is given which
+means last node is connected with xth
+node of linked list. Therefore, there
+exists a loop.
+*/
+
+class LinkedListNode  {
+    int val;
+    LinkedListNode  next;
+    
+    public LinkedListNode (int val) {
+        this.val = val;
+    }
+}
+
+public class Question2 {
+    public static boolean hasLoop(LinkedListNode  head) {
+    	LinkedListNode  slowPtr = head;
+    	LinkedListNode  fastPtr = head;
+        
+        while (fastPtr != null && fastPtr.next != null) {
+            slowPtr = slowPtr.next;
+            fastPtr = fastPtr.next.next;
+            
+            if (slowPtr == fastPtr) {
+                return true; // Loop detected
+            }
+        }
+        
+        return false; // No loop found
+    }
+    
+    public static void main(String[] args) {
+    	LinkedListNode  head = new LinkedListNode (1);
+        head.next = new LinkedListNode (3);
+        head.next.next = new LinkedListNode (4);
+        
+        // Create a loop by connecting the tail to the second node
+        head.next.next.next = head.next;
+        
+        boolean hasLoop = hasLoop(head);
+        System.out.println("Does the linked list have a loop? " + hasLoop);
+    }
+}
+
+3)
+package lecture12.LinkedList;
+
+/*
+ *
+
+Given a linked list consisting of L nodes and given a number N. The task is to find the Nth node from the end of the linked list.
+>Input:
+N = 2
+LinkedList: 1->2->3->4->5->6->7->8->9
+Output:8
+Explanation:In the first example, there
+are 9 nodes in linked list and we need
+to find 2nd node from end. 2nd node
+from end is 8.
+*/
+class ListNode {
+    int val;
+    ListNode next;
+
+    public ListNode(int val) {
+        this.val = val;
+    }
+}
+
+public class Question3 {
+    public static int findNthFromEnd(ListNode head, int N) {
+        if (head == null || N <= 0) {
+            return -1;
+        }
+
+        ListNode slowPtr = head;
+        ListNode fastPtr = head;
+
+        // Move the fast pointer N positions ahead
+        for (int i = 0; i < N; i++) {
+            if (fastPtr == null) {
+                return -1; // N is greater than the length of the linked list
+            }
+            fastPtr = fastPtr.next;
+        }
+
+        // Move both pointers until the fast pointer reaches the end
+        while (fastPtr != null) {
+            slowPtr = slowPtr.next;
+            fastPtr = fastPtr.next;
+        }
+
+        // At this point, the slow pointer is at the Nth node from the end
+        return slowPtr.val;
+    }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
+        head.next.next.next.next.next = new ListNode(6);
+        head.next.next.next.next.next.next = new ListNode(7);
+        head.next.next.next.next.next.next.next = new ListNode(8);
+        head.next.next.next.next.next.next.next.next = new ListNode(9);
+
+        int N = 2;
+        int result = findNthFromEnd(head, N);
+        System.out.println("Nth node from the end: " + result);
+    }
+}
+
+4)
+package lecture12.LinkedList;
+
+
+/*
+Given a singly linked list of characters, write a function that returns true if the given list is a palindrome, else false.
+> Input: R->A->D->A->R->NULL
+> 
+> 
+> **Output:** Yes
+> 
+> **Input:** C->O->D->E->NULL
+> 
+> **Output:** No
+>
+*/
+
+
+
+class ListNode {
+    char val;
+    ListNode next;
+    
+    public ListNode(char val) {
+        this.val = val;
+    }
+}
+
+public class Question4 {
+    public static boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        
+        ListNode slowPtr = head;
+        ListNode fastPtr = head;
+        
+        // Move slowPtr to the middle of the linked list and reverse the first half
+        ListNode prev = null;
+        while (fastPtr != null && fastPtr.next != null) {
+            fastPtr = fastPtr.next.next;
+            
+            ListNode next = slowPtr.next;
+            slowPtr.next = prev;
+            prev = slowPtr;
+            slowPtr = next;
+        }
+        
+        // If the linked list has an odd number of nodes, move slowPtr one step forward
+        if (fastPtr != null) {
+            slowPtr = slowPtr.next;
+        }
+        
+        // Compare the reversed first half with the second half
+        while (slowPtr != null) {
+            if (slowPtr.val != prev.val) {
+                return false; // Not a palindrome
+            }
+            slowPtr = slowPtr.next;
+            prev = prev.next;
+        }
+        
+        return true; // Palindrome
+    }
+    
+    public static void main(String[] args) {
+        ListNode head1 = new ListNode('R');
+        head1.next = new ListNode('A');
+        head1.next.next = new ListNode('D');
+        head1.next.next.next = new ListNode('A');
+        head1.next.next.next.next = new ListNode('R');
+        
+        boolean isPalindrome1 = isPalindrome(head1);
+        System.out.println("Is the linked list a palindrome? " + (isPalindrome1 ? "Yes" : "No"));
+        
+        ListNode head2 = new ListNode('C');
+        head2.next = new ListNode('O');
+        head2.next.next = new ListNode('D');
+        head2.next.next.next = new ListNode('E');
+        
+        boolean isPalindrome2 = isPalindrome(head2);
+        System.out.println("Is the linked list a palindrome? " + (isPalindrome2 ? "Yes" : "No"));
+    }
+}
+
+5)
+package lecture12.LinkedList;
+
+/*
+
+Given a linked list of **N** nodes such that it may contain a loop.
+
+A loop here means that the last node of the link list is connected to the node at position X(1-based index). If the link list does not have any loop, X=0.
+
+Remove the loop from the linked list, if it is present, i.e. unlink the last node which is forming the loop.
+
+
+Input:
+N = 3
+value[] = {1,3,4}
+X = 2
+Output:1
+Explanation:The link list looks like
+1 -> 3 -> 4
+     ^    |
+     |____|
+A loop is present. If you remove it
+successfully, the answer will be 1.
+
+
+*/
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    public ListNode(int val) {
+        this.val = val;
+    }
+}
+
+public class Question5 {
+    public static void removeLoop(ListNode head) {
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        ListNode slowPtr = head;
+        ListNode fastPtr = head;
+        ListNode loopNode = null;
+
+        // Detect the loop using Floyd's cycle detection algorithm
+        while (fastPtr != null && fastPtr.next != null) {
+            slowPtr = slowPtr.next;
+            fastPtr = fastPtr.next.next;
+
+            if (slowPtr == fastPtr) {
+                loopNode = slowPtr;
+                break;
+            }
+        }
+
+        // If a loop is found, remove it
+        if (loopNode != null) {
+            slowPtr = head;
+
+            // If the loop starts at the head of the linked list
+            if (slowPtr == loopNode) {
+                while (fastPtr.next != slowPtr) {
+                    fastPtr = fastPtr.next;
+                }
+            } else {
+                while (slowPtr.next != fastPtr.next) {
+                    slowPtr = slowPtr.next;
+                    fastPtr = fastPtr.next;
+                }
+            }
+
+            // Remove the loop by setting the next pointer of the last node to null
+            fastPtr.next = null;
+        }
+    }
+
+    public static void printLinkedList(ListNode head) {
+        ListNode curr = head;
+        while (curr != null) {
+            System.out.print(curr.val + " ");
+            curr = curr.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(3);
+        head.next.next = new ListNode(4);
+        head.next.next.next = head.next; // Creating a loop at position X = 2
+
+        System.out.println("Original linked list:");
+        printLinkedList(head);
+
+        removeLoop(head);
+
+        System.out.println("Modified linked list:");
+        printLinkedList(head);
+    }
+}
+
+6)
+package lecture12.LinkedList;
+
+/*
+
+Given a linked list and two integers M and N. Traverse the linked list such that you retain M nodes then delete next N nodes, continue the same till end of the linked list.
+
+Difficulty Level: Rookie
+Input:
+M = 2, N = 2
+Linked List: 1->2->3->4->5->6->7->8
+Output:
+Linked List: 1->2->5->6
+
+Input:
+M = 3, N = 2
+Linked List: 1->2->3->4->5->6->7->8->9->10
+Output:
+Linked List: 1->2->3->6->7->8
+
+Input:
+M = 1, N = 1
+Linked List: 1->2->3->4->5->6->7->8->9->10
+Output:
+Linked List: 1->3->5->7->9
+
+*/
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    public ListNode(int val) {
+        this.val = val;
+    }
+}
+
+public class Question6 {
+    public static ListNode retainAndDelete(ListNode head, int M, int N) {
+        if (head == null || M <= 0 || N <= 0) {
+            return head;
+        }
+
+        ListNode curr = head;
+        int count;
+
+        while (curr != null) {
+            // Retain M nodes
+            for (count = 1; count < M && curr != null; count++) {
+                curr = curr.next;
+            }
+
+            if (curr == null) {
+                break;
+            }
+
+            // Delete N nodes
+            ListNode next = curr.next;
+            for (count = 1; count <= N && next != null; count++) {
+                next = next.next;
+            }
+
+            curr.next = next; // Connect the last retained node to the next node after deleted nodes
+            curr = next; // Move to the next retained node
+        }
+
+        return head;
+    }
+
+    public static void printLinkedList(ListNode head) {
+        ListNode curr = head;
+        while (curr != null) {
+            System.out.print(curr.val + " ");
+            curr = curr.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        ListNode head1 = new ListNode(1);
+        head1.next = new ListNode(2);
+        head1.next.next = new ListNode(3);
+        head1.next.next.next = new ListNode(4);
+        head1.next.next.next.next = new ListNode(5);
+        head1.next.next.next.next.next = new ListNode(6);
+        head1.next.next.next.next.next.next = new ListNode(7);
+        head1.next.next.next.next.next.next.next = new ListNode(8);
+
+        System.out.println("Original linked list:");
+        printLinkedList(head1);
+
+        int M1 = 2;
+        int N1 = 2;
+        ListNode modifiedHead1 = retainAndDelete(head1, M1, N1);
+
+        System.out.println("Modified linked list:");
+        printLinkedList(modifiedHead1);
+
+        ListNode head2 = new ListNode(1);
+        head2.next = new ListNode(2);
+        head2.next.next = new ListNode(3);
+        head2.next.next.next = new ListNode(4);
+        head2.next.next.next.next = new ListNode(5);
+        head2.next.next.next.next.next = new ListNode(6);
+        head2.next.next.next.next.next.next = new ListNode(7);
+        head2.next.next.next.next.next.next.next = new ListNode(8);
+        head2.next.next.next.next.next.next.next.next = new ListNode(9);
+        head2.next.next.next.next.next.next.next.next.next = new ListNode(10);
+
+        System.out.println("Original linked list:");
+        printLinkedList(head2);
+
+        int M2 = 3;
+        int N2 = 2;
+        ListNode modifiedHead2 = retainAndDelete(head2, M2, N2);
+
+        System.out.println("Modified linked list:");
+        printLinkedList(modifiedHead2);
+
+        ListNode head3 = new ListNode(1);
+        head3.next = new ListNode(2);
+        head3.next.next = new ListNode(3);
+        head3.next.next.next = new ListNode(4);
+        head3.next.next.next.next = new ListNode(5);
+        head3.next.next.next.next.next = new ListNode(6);
+        head3.next.next.next.next.next.next = new ListNode(7);
+        head3.next.next.next.next.next.next.next = new ListNode(8);
+        head3.next.next.next.next.next.next.next.next = new ListNode(9);
+        head3.next.next.next.next.next.next.next.next.next = new ListNode(10);
+
+        System.out.println("Original linked list:");
+        printLinkedList(head3);
+
+        int M3 = 1;
+        int N3 = 1;
+        ListNode modifiedHead3 = retainAndDelete(head3, M3, N3);
+
+        System.out.println("Modified linked list:");
+        printLinkedList(modifiedHead3);
+    }
+}
+
+7)
+package lecture12.LinkedList;
+
+/*
+Given two linked lists, insert nodes of second list into first list at alternate positions of first list.
+For example, if first list is 5->7->17->13->11 and second is 12->10->2->4->6, the first list should become 5->12->7->10->17->2->13->4->11->6 and second list should become empty. The nodes of second list should only be inserted when there are positions available. For example, if the first list is 1->2->3 and second list is 4->5->6->7->8, then first list should become 1->4->2->5->3->6 and second list to 7->8.
+
+Use of extra space is not allowed (Not allowed to create additional nodes), i.e., insertion must be done in-place. Expected time complexity is O(n) where n is number of nodes in first list.
+*/
+
+
+class Node {
+    int data;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class Question7 {
+    public static void mergeLists(Node first, Node second) {
+        if (first == null || second == null) {
+            return;
+        }
+
+        Node firstCurrent = first;
+        Node secondCurrent = second;
+
+        while (firstCurrent != null && secondCurrent != null) {
+            Node firstNext = firstCurrent.next;
+            Node secondNext = secondCurrent.next;
+
+            firstCurrent.next = secondCurrent;
+            secondCurrent.next = firstNext;
+
+            firstCurrent = firstNext;
+            secondCurrent = secondNext;
+        }
+
+        second = secondCurrent;
+    }
+
+    public static void printList(Node head) {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Node first = new Node(5);
+        first.next = new Node(7);
+        first.next.next = new Node(17);
+        first.next.next.next = new Node(13);
+        first.next.next.next.next = new Node(11);
+
+        Node second = new Node(12);
+        second.next = new Node(10);
+        second.next.next = new Node(2);
+        second.next.next.next = new Node(4);
+        second.next.next.next.next = new Node(6);
+
+        System.out.println("Before merging:");
+        System.out.print("First list: ");
+        printList(first);
+        System.out.print("Second list: ");
+        printList(second);
+
+        mergeLists(first, second);
+
+        System.out.println("After merging:");
+        System.out.print("First list: ");
+        printList(first);
+        System.out.print("Second list: ");
+        printList(second);
+    }
+}
+
+8)
+package lecture12.LinkedList;
+
+/*
+
+Given a singly linked list, find if the linked list is circular or not.
+A linked list is called circular if it is not NULL-terminated and all nodes are connected in the form of a cycle. Below is an example of a circular linked list.
+*/
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    public ListNode(int val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+
+public class Question8 {
+    public static boolean isCircular(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
+
+        ListNode slowPtr = head;
+        ListNode fastPtr = head.next;
+
+        while (fastPtr != null && fastPtr.next != null) {
+            if (slowPtr == fastPtr || slowPtr == fastPtr.next) {
+                return true; // Linked list is circular
+            }
+            slowPtr = slowPtr.next;
+            fastPtr = fastPtr.next.next;
+        }
+
+        return false; // Linked list is not circular
+    }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = head; // Make the list circular
+
+        boolean isCircular = isCircular(head);
+        System.out.println("Is the linked list circular? " + (isCircular ? "Yes" : "No"));
+    }
+}
+
+
+
+
+
+
+
+
+
